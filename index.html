@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cauã Aguiar · Desenvolvedor Full Stack</title>
+<meta name="description" content="Portfólio de Cauã Aguiar, desenvolvedor full stack com ênfase em back-end: Python, FastAPI, Django REST, React, TypeScript e C#/.NET.">
+<meta property="og:title" content="Cauã Aguiar · Desenvolvedor Full Stack">
+<meta property="og:description" content="Projetos, trajetória e stack de Cauã Aguiar, estudante de Ciência da Computação na UCB.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cauagomesdev.github.io/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f4fd1'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='15' font-weight='700' text-anchor='middle' fill='white'%3ECA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: uma coluna editorial; hero com uma "requisição de API" que devolve o perfil; projetos como endpoints. */
+:root {
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --fg: #131c28;
+  --muted: #566476;
+  --line: #dce2ea;
+  --accent: #1f4fd1;
+  --accent-soft: #e6edfc;
+  --code-bg: #0f1722;
+  --code-fg: #d7e0ec;
+  --code-key: #8fb0ff;
+  --code-str: #9fdcb8;
+  --code-dim: #6c7a8d;
+  --ok: #1d8a5a;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c121a; --surface: #131b26; --fg: #e5ebf2; --muted: #93a1b3; --line: #243042;
+    --accent: #8aa8ff; --accent-soft: #1a2640; --code-bg: #080d14; --code-fg: #d7e0ec;
+    --code-key: #8fb0ff; --code-str: #9fdcb8; --code-dim: #66748a; --ok: #4cc48d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c121a; --surface: #131b26; --fg: #e5ebf2; --muted: #93a1b3; --line: #243042;
+  --accent: #8aa8ff; --accent-soft: #1a2640; --code-bg: #080d14; --code-fg: #d7e0ec;
+  --code-key: #8fb0ff; --code-str: #9fdcb8; --code-dim: #66748a; --ok: #4cc48d;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+img { max-width: 100%; }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 1rem; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1040px; margin: 0 auto; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.1; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.mono { font-family: var(--font-mono); }
+
+/* Nav */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+  margin: 0 calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  padding: 0 max(16px, env(safe-area-inset-left, 0px));
+}
+nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 56px; }
+.brand { font-family: var(--font-mono); font-size: .875rem; color: var(--fg); text-decoration: none; font-weight: 500; }
+.brand span { color: var(--accent); }
+.navlinks { display: flex; gap: 20px; font-size: .9rem; }
+.navlinks a { color: var(--muted); text-decoration: none; }
+.navlinks a:hover { color: var(--fg); }
+@media (max-width: 560px) { .navlinks a.opt { display: none; } }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: 48px; align-items: center; padding-block: 72px 56px; }
+.hero > * { min-width: 0; }
+.status { display: inline-flex; align-items: center; gap: 8px; font-size: .82rem; font-weight: 500; color: var(--ok);
+  border: 1px solid color-mix(in srgb, var(--ok) 35%, transparent); padding: 4px 12px; border-radius: 999px; margin-bottom: 20px; }
+.status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ok); }
+.hero h1 { font-size: clamp(2.6rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -0.02em; }
+.hero .role { font-size: clamp(1.1rem, 2.2vw, 1.35rem); color: var(--muted); margin-top: 12px; font-weight: 500; }
+.hero .role b { color: var(--fg); font-weight: 600; }
+.hero .lede { margin-top: 20px; max-width: 34rem; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 8px; font-weight: 600; font-size: .95rem; text-decoration: none; border: 1px solid var(--line); color: var(--fg); background: var(--surface); transition: border-color .15s, transform .15s; }
+.btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+
+.terminal { background: var(--code-bg); color: var(--code-fg); border-radius: 12px; font-family: var(--font-mono); font-size: .82rem; line-height: 1.7; overflow: hidden; box-shadow: 0 18px 40px -24px rgba(10, 20, 40, .55); }
+.terminal .bar { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,.08); color: var(--code-dim); font-size: .75rem; }
+.terminal .bar b { color: var(--code-str); font-weight: 500; }
+.terminal pre { margin: 0; padding: 16px 18px 20px; overflow-x: auto; white-space: pre; }
+.k { color: var(--code-key); } .s { color: var(--code-str); } .d { color: var(--code-dim); }
+
+/* Sections */
+section { padding-block: 56px; border-top: 1px solid var(--line); }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+.sec-head h2 { font-size: clamp(1.6rem, 3.4vw, 2.1rem); font-weight: 800; letter-spacing: -0.01em; }
+.sec-head p { color: var(--muted); max-width: 34rem; }
+
+/* Projects */
+.projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.proj { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; transition: border-color .15s; }
+.proj:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+.proj.feature { grid-column: 1 / -1; }
+.endpoint { font-family: var(--font-mono); font-size: .78rem; padding: 12px 20px; background: var(--accent-soft); color: var(--accent); display: flex; gap: 10px; flex-wrap: wrap; min-width: 0; }
+.endpoint .verb { font-weight: 500; color: var(--fg); }
+.proj-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.proj-meta { font-size: .82rem; color: var(--muted); display: flex; gap: 6px 14px; flex-wrap: wrap; }
+.proj h3 { font-size: 1.35rem; font-weight: 800; }
+.proj.feature h3 { font-size: 1.7rem; }
+.proj ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.proj.feature .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 28px; }
+.badge { font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ok); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 6px; }
+.chip { font-family: var(--font-mono); font-size: .74rem; padding: 3px 9px; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); }
+.proj-links { display: flex; gap: 16px; font-size: .9rem; font-weight: 600; }
+
+/* Timeline */
+.timeline { display: grid; gap: 0; }
+.tl { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 24px; padding: 18px 0; border-bottom: 1px dashed var(--line); }
+.tl:last-child { border-bottom: none; }
+.tl time { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); padding-top: 3px; font-variant-numeric: tabular-nums; }
+.tl h3 { font-family: var(--font-body); font-size: 1.05rem; font-weight: 600; }
+.tl .org { color: var(--muted); font-size: .92rem; }
+.tl p.desc { margin-top: 6px; max-width: 42rem; }
+
+/* Skills */
+.skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.skill { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+.skill h3 { font-family: var(--font-mono); font-size: .78rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.lvl { display: grid; gap: 8px; }
+.lvl div { display: grid; gap: 2px; }
+.lvl small { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+.lvl span { font-size: .93rem; }
+
+/* Contact */
+.contact { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: start; }
+.contact > * { min-width: 0; }
+.contact h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; }
+.contact .lede { color: var(--muted); margin-top: 12px; max-width: 30rem; }
+.clist { display: grid; gap: 10px; }
+.crow { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; min-width: 0; }
+.crow div { min-width: 0; }
+.crow small { display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+.crow .val { font-family: var(--font-mono); font-size: .88rem; overflow-wrap: anywhere; user-select: all; }
+.crow button { font: inherit; font-size: .82rem; font-weight: 600; color: var(--accent); background: none; border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; flex-shrink: 0; }
+.crow button:hover { border-color: var(--accent); }
+footer { padding-block: 28px 40px; color: var(--muted); font-size: .82rem; border-top: 1px solid var(--line); }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; padding-block: 48px 40px; gap: 32px; }
+  .skills { grid-template-columns: 1fr 1fr; }
+  .contact { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .projects { grid-template-columns: 1fr; }
+  .proj.feature .cols { grid-template-columns: 1fr; }
+  .skills { grid-template-columns: 1fr; }
+  .tl { grid-template-columns: 1fr; gap: 4px; }
+}
+</style>
+
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#inicio">caua<span>.</span>aguiar</a>
+    <div class="navlinks">
+      <a href="#projetos">Projetos</a>
+      <a class="opt" href="#trajetoria">Trajetória</a>
+      <a class="opt" href="#stack">Stack</a>
+      <a href="#contato">Contato</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap" id="inicio">
+  <header class="hero">
+    <div>
+      <div class="status">Aberto a estágio e vagas júnior</div>
+      <h1>Cauã Aguiar</h1>
+      <p class="role"><b>Desenvolvedor Full Stack</b> com ênfase em back-end</p>
+      <p class="lede">Estudante de Ciência da Computação na UCB e estagiário de Desenvolvimento de Sistemas no Ministério Público Militar. Construo APIs REST em Python, integro IA generativa a sistemas reais e já liderei equipes em projetos para empresas parceiras.</p>
+      <div class="ctas">
+        <a class="btn primary" href="#projetos">Ver projetos</a>
+        <a class="btn" href="Curriculo_Caua_Aguiar.pdf" download>Baixar currículo (PDF)</a>
+        <a class="btn" href="https://github.com/cauagomesdev" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/cau%C3%A3-aguiar-1633952b9/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+
+    <div class="terminal" aria-label="Resumo do perfil em formato de resposta de API">
+      <div class="bar"><span>GET /api/devs/caua-aguiar</span><b>200 OK</b></div>
+<pre>{
+  <span class="k">"nome"</span>: <span class="s">"Cauã Aguiar"</span>,
+  <span class="k">"foco"</span>: <span class="s">"Full Stack · Back-end"</span>,
+  <span class="k">"local"</span>: <span class="s">"Brasília – DF"</span>,
+  <span class="k">"formacao"</span>: {
+    <span class="k">"curso"</span>: <span class="s">"Ciência da Computação (UCB)"</span>,
+    <span class="k">"conclusao"</span>: <span class="s">"2027-12"</span>
+  },
+  <span class="k">"stack"</span>: [
+    <span class="s">"Python"</span>, <span class="s">"FastAPI"</span>, <span class="s">"Django REST"</span>,
+    <span class="s">"PostgreSQL"</span>, <span class="s">"React"</span>, <span class="s">"TypeScript"</span>,
+    <span class="s">"Docker"</span>, <span class="s">"C# / .NET"</span>
+  ],
+  <span class="k">"destaques"</span>: [
+    <span class="s">"APIs REST com JWT e RBAC"</span>,
+    <span class="s">"Integração de LLMs"</span>,
+    <span class="s">"2º lugar em hackathon"</span>
+  ],
+  <span class="k">"disponivel"</span>: <span class="k">true</span>
+}</pre>
+    </div>
+  </header>
+
+  <section id="projetos" aria-labelledby="h-proj">
+    <div class="sec-head">
+      <h2 id="h-proj">Projetos</h2>
+      <p>Sistemas feitos para empresas parceiras na Residência Tecnológica Porto Digital e projetos próprios.</p>
+    </div>
+
+    <div class="projects">
+      <article class="proj feature">
+        <div class="endpoint"><span class="verb">POST</span><span>/vagas/{id}/ranking</span></div>
+        <div class="proj-body">
+          <div class="proj-meta"><span>Empresa parceira: BBTS</span><span>Scrum Master e Líder Técnico</span><span>mar–jul 2026</span></div>
+          <h3>Sistema de Gestão de Vagas com IA</h3>
+          <p>Sistema full stack para gestão de vagas, aprovação pelo RH e ranking automático de candidatos.</p>
+          <ul class="cols">
+            <li>API REST em FastAPI com autenticação JWT e controle de acesso por perfil (RH e Requisitante)</li>
+            <li>Motor de ranking com pontuação ponderada e penalidades por requisitos ausentes e localização</li>
+            <li>Extração automática de dados de currículos em PDF com LLM (Groq, LLaMA 3.3 70B)</li>
+            <li>Conformidade com a LGPD: anonimização de dados e log de auditoria</li>
+            <li>Migrações versionadas com Alembic e ambiente em Docker Compose</li>
+            <li>Liderança das equipes de back-end e front-end por 4 meses</li>
+          </ul>
+          <div class="chips"><span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">PostgreSQL</span><span class="chip">SQLAlchemy</span><span class="chip">Alembic</span><span class="chip">JWT</span><span class="chip">Docker</span><span class="chip">LLM</span><span class="chip">React</span><span class="chip">TypeScript</span></div>
+          <div class="proj-links"><a href="https://github.com/cauagomesdev/bbts-vacancy-management-backend" target="_blank" rel="noopener">Código no GitHub →</a></div>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="endpoint"><span class="verb">POST</span><span>/emails/classificar</span></div>
+        <div class="proj-body">
+          <div class="proj-meta"><span>Empresa parceira: SINDESEI</span><span>2024–2025</span></div>
+          <h3>Rise Up</h3>
+          <p>Classificação automática de e-mails com IA e identificação de reuniões, com integração a calendários. Desenvolvido pela equipe LEVEL 33 IA.</p>
+          <ul>
+            <li>Liderança do back-end: APIs REST em Django REST Framework</li>
+            <li>Fluxos de automação com n8n</li>
+            <li>Levantamento de requisitos e documentação como líder de Negócios</li>
+          </ul>
+          <div class="chips"><span class="chip">Python</span><span class="chip">Django REST</span><span class="chip">n8n</span><span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">Scrum</span></div>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="endpoint"><span class="verb">POST</span><span>/carteira/transferir</span></div>
+        <div class="proj-body">
+          <div class="proj-meta"><span>HackaTruck IBM</span><span>2025</span></div>
+          <h3>MinhaCripto</h3>
+          <p>Aplicativo iOS de carteira digital para transações com USDT na rede TRON.</p>
+          <ul>
+            <li>App em Swift e SwiftUI</li>
+            <li>Back-end em Node.js e Node-RED</li>
+            <li>Persistência em IBM Cloudant (NoSQL)</li>
+          </ul>
+          <div class="chips"><span class="chip">Swift</span><span class="chip">SwiftUI</span><span class="chip">Node.js</span><span class="chip">Node-RED</span><span class="chip">Cloudant</span></div>
+          <div class="proj-links"><a href="https://github.com/cauagomesdev/projeto-wallet" target="_blank" rel="noopener">Código no GitHub →</a></div>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="endpoint"><span class="verb">GET</span><span>/api/mindup</span></div>
+        <div class="proj-body">
+          <div class="proj-meta"><span>Projeto acadêmico</span><span>2025</span></div>
+          <h3>MindUp</h3>
+          <p>Aplicação web full stack com front-end em React e API em Django REST Framework.</p>
+          <ul>
+            <li>Front-end em React com Vite</li>
+            <li>Modelagem e integração do banco PostgreSQL</li>
+          </ul>
+          <div class="chips"><span class="chip">React</span><span class="chip">Vite</span><span class="chip">Django REST</span><span class="chip">PostgreSQL</span></div>
+          <div class="proj-links"><a href="https://github.com/cauagomesdev/MindUp" target="_blank" rel="noopener">Código no GitHub →</a></div>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="endpoint"><span class="verb">POST</span><span>/voluntarios/conectar</span></div>
+        <div class="proj-body">
+          <div class="badge">2º lugar · Hackathon</div>
+          <h3>Help UCB</h3>
+          <p>Aplicativo de acessibilidade que conecta voluntários a alunos com deficiência. Desenvolvido em equipe na Semana Acadêmica de TI da UCB.</p>
+          <div class="proj-meta"><span>Semana Acadêmica de TI · UCB</span><span>2025</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="trajetoria" aria-labelledby="h-traj">
+    <div class="sec-head"><h2 id="h-traj">Trajetória</h2></div>
+    <div class="timeline">
+      <div class="tl">
+        <time>out/2026 – atual</time>
+        <div>
+          <h3>Estagiário em Desenvolvimento de Sistemas</h3>
+          <div class="org">Ministério Público Militar (MPM / PGJM) · SPAI</div>
+          <p class="desc">Aprovado em processo seletivo. Em capacitação na stack do setor: C#, .NET, Blazor e SQL Server, com iniciativas de IA em Python e PostgreSQL.</p>
+        </div>
+      </div>
+      <div class="tl">
+        <time>mar – jul/2026</time>
+        <div>
+          <h3>Scrum Master e Líder Técnico</h3>
+          <div class="org">Residência Tecnológica Porto Digital · projeto BBTS</div>
+          <p class="desc">Liderança das equipes de back-end e front-end no Sistema de Gestão de Vagas com IA.</p>
+        </div>
+      </div>
+      <div class="tl">
+        <time>2024 – dez/2025</time>
+        <div>
+          <h3>Líder de Back-end · Líder de Documentação e Negócios</h3>
+          <div class="org">Residência Tecnológica Porto Digital · projeto Rise Up (SINDESEI)</div>
+          <p class="desc">Ponte entre requisitos de negócio e desenvolvimento; depois, liderança das APIs do produto.</p>
+        </div>
+      </div>
+      <div class="tl">
+        <time>2025</time>
+        <div>
+          <h3>HackaTruck MakerSpace</h3>
+          <div class="org">IBM / Instituto Eldorado · 150h</div>
+          <p class="desc">Cloud Services, Swift, Serviços Cognitivos e Programação Orientada a Objetos.</p>
+        </div>
+      </div>
+      <div class="tl">
+        <time>até dez/2027</time>
+        <div>
+          <h3>Bacharelado em Ciência da Computação</h3>
+          <div class="org">Universidade Católica de Brasília (UCB) · 6º semestre</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack" aria-labelledby="h-stack">
+    <div class="sec-head">
+      <h2 id="h-stack">Stack</h2>
+      <p>Separada pelo nível real de uso, do que já entreguei em projeto ao que estou aprofundando.</p>
+    </div>
+    <div class="skills">
+      <div class="skill">
+        <h3>Back-end</h3>
+        <div class="lvl">
+          <div><small>Em projetos</small><span>Python, FastAPI, Django REST Framework, APIs REST, JWT, SQLAlchemy, Alembic</span></div>
+          <div><small>Intermediário</small><span>C#, .NET (ASP.NET Web API), Node.js, Java</span></div>
+        </div>
+      </div>
+      <div class="skill">
+        <h3>Front-end</h3>
+        <div class="lvl">
+          <div><small>Em projetos</small><span>React, TypeScript, JavaScript, HTML5, CSS3</span></div>
+          <div><small>Intermediário</small><span>Next.js, Blazor, Vite, Tailwind CSS, SwiftUI</span></div>
+          <div><small>Básico</small><span>Angular</span></div>
+        </div>
+      </div>
+      <div class="skill">
+        <h3>Dados</h3>
+        <div class="lvl">
+          <div><small>Em projetos</small><span>PostgreSQL, SQL</span></div>
+          <div><small>Intermediário</small><span>SQL Server, MySQL</span></div>
+          <div><small>Básico</small><span>IBM Cloudant (NoSQL)</span></div>
+        </div>
+      </div>
+      <div class="skill">
+        <h3>IA e automação</h3>
+        <div class="lvl">
+          <div><small>Em projetos</small><span>Integração de LLMs (Groq / LLaMA), IA generativa</span></div>
+          <div><small>Intermediário</small><span>n8n, Node-RED</span></div>
+        </div>
+      </div>
+      <div class="skill">
+        <h3>DevOps e ferramentas</h3>
+        <div class="lvl">
+          <div><small>Em projetos</small><span>Docker, Docker Compose, Git, GitHub, Figma, Trello</span></div>
+        </div>
+      </div>
+      <div class="skill">
+        <h3>Práticas</h3>
+        <div class="lvl">
+          <div><small>Em projetos</small><span>Scrum, levantamento de requisitos, documentação de software, LGPD</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contato" aria-labelledby="h-contato">
+    <div class="contact">
+      <div>
+        <h2 id="h-contato">Vamos conversar</h2>
+        <p class="lede">Estou buscando oportunidades de estágio e vagas júnior em desenvolvimento de software, back-end ou full stack.</p>
+        <div class="ctas"><a class="btn primary" href="mailto:cauaaguiarti@gmail.com">Enviar e-mail</a><a class="btn" href="Curriculo_Caua_Aguiar.pdf" download>Baixar currículo (PDF)</a></div>
+      </div>
+      <div class="clist">
+        <div class="crow">
+          <div><small>E-mail</small><span class="val" id="v-email">cauaaguiarti@gmail.com</span></div>
+          <button type="button" id="copy-email" data-target="v-email">Copiar</button>
+        </div>
+        <div class="crow">
+          <div><small>Telefone</small><span class="val" id="v-tel">(61) 99590-5793</span></div>
+          <button type="button" id="copy-tel" data-target="v-tel">Copiar</button>
+        </div>
+        <div class="crow">
+          <div><small>LinkedIn</small><a class="val" href="https://www.linkedin.com/in/cau%C3%A3-aguiar-1633952b9/" target="_blank" rel="noopener">cauã-aguiar-1633952b9</a></div>
+        </div>
+        <div class="crow">
+          <div><small>GitHub</small><a class="val" href="https://github.com/cauagomesdev" target="_blank" rel="noopener">cauagomesdev</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Cauã Aguiar · Brasília – DF · 2026</div>
+</footer>
+
+<script>
+document.querySelectorAll('button[data-target]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var el = document.getElementById(btn.dataset.target);
+    var text = el.textContent.trim();
+    function done(msg) { var old = 'Copiar'; btn.textContent = msg; setTimeout(function () { btn.textContent = old; }, 1600); }
+    function fallback() {
+      var r = document.createRange(); r.selectNodeContents(el);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      done('Selecionado');
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function () { done('Copiado'); }, fallback);
+    } catch (e) { fallback(); }
+  });
+});
+</script>
+
+</body>
+</html>
